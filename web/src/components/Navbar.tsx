@@ -30,8 +30,8 @@ const Navbar = () => {
         <>
             <nav
                 className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${isScrolled
-                        ? 'bg-tennis-navy/95 py-4 shadow-lg backdrop-blur-md'
-                        : 'bg-transparent py-6'
+                    ? 'bg-tennis-navy/95 py-4 shadow-lg backdrop-blur-md'
+                    : 'bg-transparent py-6'
                     }`}
             >
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
@@ -40,6 +40,7 @@ const Navbar = () => {
                         SS<span className="text-tennis-gold">T</span>
                         <span className="hidden text-sm font-light tracking-widest sm:inline-block ml-2 opacity-80">
                             Stockholm South Tennis
+                            Academy
                         </span>
                     </div>
 
