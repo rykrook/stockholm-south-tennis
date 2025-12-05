@@ -8,10 +8,11 @@ import NotificationBanner from './components/NotificationBanner';
 import ProgramsSection from './components/ProgramsSection';
 import ScrollToTop from './components/ScrollToTop';
 import Testimonials from './components/Testimonials';
+import GallerySection from './components/GallerySection';
 
 function App() {
   const [isBannerVisible, setIsBannerVisible] = useState(false);
-  
+
   return (
     <main>
      <NotificationBanner onVisibilityChange={setIsBannerVisible} />
@@ -19,6 +20,7 @@ function App() {
       <Hero />
       <ProgramsSection />
       <CoachSection />
+      <GallerySection />
       <Testimonials />
       <BookingSection />
       <ScrollToTop/>
