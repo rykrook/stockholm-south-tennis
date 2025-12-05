@@ -16,6 +16,13 @@ export default {
       initialValue: 'Head Coach',
     },
     {
+        name: 'email',
+        title: 'E-post för kontaktknapp',
+        type: 'string',
+        description: 'Om denna fylls i visas en "Kontakta mig"-knapp under bion.',
+        validation: (Rule: any) => Rule.email().warning('Bör vara en giltig e-postadress.'),
+    },
+    {
       name: 'image',
       title: 'Porträttbild',
       type: 'image',
@@ -32,6 +39,13 @@ export default {
       title: 'Tränarfilosofi (Citat)',
       type: 'string',
       description: 'Ett kort, kraftfullt citat. T.ex: "Hard work beats talent..."'
-    }
+    },
+    {
+      name: 'signature',
+      title: 'Signatur (Bild)',
+      type: 'image',
+      description: 'Ladda upp en bild på signaturen. Helst en PNG med genomskinlig bakgrund för bäst resultat.',
+      options: { hotspot: true },
+    },
   ]
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Instagram, Facebook, Mail, MapPin, Phone } from 'lucide-react';
-import { client } from '../lib/sanity';
-import logoImg from '../assets/logo.png';
+import { client, urlFor } from '../lib/sanity';
+import localLogo from '../assets/localLogo.png';
 
 interface SiteSettings {
   address: string;
@@ -10,6 +10,7 @@ interface SiteSettings {
   phone: string;
   instagramUrl: string;
   facebookUrl: string;
+  logo: any;
 }
 
 const Footer = () => {
@@ -31,7 +32,11 @@ const Footer = () => {
           
           {/* KOLUMN 1: Logo & Info */}
           <div className="space-y-6">
-            <img src={logoImg} alt="SST Logo" className="h-12 w-auto brightness-0 invert" />
+           <img 
+              src={settings?.logo ? urlFor(settings.logo).url() : localLogo} 
+              alt="SST Logo" 
+              className="h-12 w-auto -ml-10" 
+            />
             <p className="text-gray-400 text-sm leading-relaxed">
               Vi utvecklar framtidens tennisspelare i södra Stockholm. Professionell träning med passion och kvalitet.
             </p>

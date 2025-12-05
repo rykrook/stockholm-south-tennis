@@ -8,6 +8,8 @@ interface Coach {
   image: any;
   bio: string;
   philosophy: string;
+  email?: string; 
+  signature?: any;
 }
 
 const CoachSection = () => {
@@ -21,8 +23,7 @@ const CoachSection = () => {
     }).catch(console.error);
   }, []);
 
-  if (!coach) return null; // Visa inget om ingen tränare finns inlagd
-
+  if (!coach) return null;
   return (
     <section id="om-oss" className="relative overflow-hidden bg-tennis-navy py-24 text-white">
       
@@ -76,17 +77,24 @@ const CoachSection = () => {
             {coach.bio}
           </p>
 
-          <img 
-            // Här kan man lägga in en bild på en signatur om man vill vara extra fancy.
-            // Just nu kör vi en knapp istället.
-            src="" 
-            alt="" 
-            className="h-12 opacity-50" 
-          />
+         {/* SIGNATUR-BILD */}
+          {/* Visa bara om bilden finns uppladdad i Sanity */}
+          {coach.signature && (
+            <img 
+              src={urlFor(coach.signature).url()} 
+              alt={`${coach.name} signatur`}
+              className="mb-8 h-16 w-auto opacity-60 invert filter" 
+            />
+          )}
 
-          <button className="border border-white bg-transparent px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white hover:text-tennis-navy">
-            Kontakta mig
-          </button>
+         {coach.email && (
+            <a 
+              href={`mailto:${coach.email}`}
+              className="inline-block border border-white bg-transparent px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-all hover:bg-white hover:text-tennis-navy"
+            >
+              Kontakta mig
+            </a>
+          )}
 
         </motion.div>
       </div>
