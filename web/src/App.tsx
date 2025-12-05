@@ -9,6 +9,7 @@ import ProgramsSection from './components/ProgramsSection';
 import ScrollToTop from './components/ScrollToTop';
 import Testimonials from './components/Testimonials';
 import GallerySection from './components/GallerySection';
+import SponsorsSection from './components/SponsorSection';
 
 function App() {
   const [isBannerVisible, setIsBannerVisible] = useState(false);
@@ -24,6 +25,7 @@ function App() {
       <Testimonials />
       <BookingSection />
       <ScrollToTop/>
+      <SponsorsSection/>
       <Footer/>
     </main>
   );

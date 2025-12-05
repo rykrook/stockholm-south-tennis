@@ -125,5 +125,11 @@ export default {
             title: 'Bakgrund: Bokning',
             type: 'backgroundSettings',
         },
+        {
+            name: 'sponsorsBackground',
+            title: 'Sponsor-sektion',
+            type: 'backgroundSettings',
+            description: 'Ladda upp en bild (t.ex. ett collage av loggor) som visas i fullbredd längst ned på sidan.',
+        },
     ]
 }
