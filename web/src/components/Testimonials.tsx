@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { client } from '../lib/sanity';
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
+import BackgroundContainer from './BackgroundContainer';
 
 interface Testimonial {
   _id: string;
@@ -13,13 +14,25 @@ interface Testimonial {
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [bgSettings, setBgSettings] = useState<any>(null);
 
   useEffect(() => {
     client.fetch(`*[_type == "testimonial"]`).then(setTestimonials).catch(console.error);
+
+    const bgQuery = `*[_type == "siteSettings"][0].testimonialsBackground{
+      image,
+      "videoUrl": video.asset->url,
+      overlayOpacity
+    }`;
+    client.fetch(bgQuery).then(setBgSettings).catch(console.error);
   }, []);
 
+  
+
   return (
-    <section className="bg-gray-50 py-24">
+    <BackgroundContainer settings={bgSettings}
+      fallbackColor="bg-gray-50"
+      className="py-24">
       <div className="mx-auto max-w-7xl px-6">
         
         {/* Rubrik */}
@@ -65,7 +78,7 @@ const Testimonials = () => {
           ))}
         </div>
       </div>
-    </section>
+    </BackgroundContainer>
   );
 };
 

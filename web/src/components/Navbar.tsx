@@ -6,7 +6,7 @@ import localLogo from '../assets/localLogo.png';
 import { useTranslation } from 'react-i18next';
 
 interface NavbarProps {
-  hasBanner: boolean;
+    hasBanner: boolean;
 }
 
 const Navbar = ({ hasBanner }: NavbarProps) => {
@@ -63,20 +63,17 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
 
     return (
         <>
-        <nav
-        className={`fixed left-0 right-0 z-50 transition-all duration-300 transform 
-        ${
-            isVisible ? 'translate-y-0' : '-translate-y-full'
-        } 
-        ${
-            hasBanner ? 'top-10' : 'top-0'
-        }
-        ${
-            isScrolled
-                ? 'bg-tennis-navy/95 py-3 shadow-lg backdrop-blur-md'
-                : 'bg-transparent py-5'
-        }`}
-    >
+            <nav
+                className={`fixed left-0 right-0 z-50 transition-all duration-300 transform 
+        ${isVisible ? 'translate-y-0' : '-translate-y-full'
+                    } 
+        ${hasBanner ? 'top-10' : 'top-0'
+                    }
+        ${isScrolled
+                        ? 'bg-tennis-navy/95 py-3 shadow-lg backdrop-blur-md'
+                        : 'bg-transparent py-5'
+                    }`}
+            >
                 <div className="flex w-full items-center justify-between pl-0 pr-4 md:pl-0 md:pr-10">
 
                     <div className="text-2xl font-extrabold uppercase tracking-tighter text-white">
@@ -116,6 +113,7 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
                             <button onClick={() => changeLanguage('fr')} className={`hover:text-tennis-gold ${i18n.language === 'fr' ? 'text-tennis-gold' : 'text-white'}`}>FR</button>
                         </div>
 
+
                         <a
                             href="#kontakt"
                             className="border border-tennis-gold bg-transparent px-5 py-2 text-xs font-bold uppercase tracking-widest text-tennis-gold transition-all hover:bg-tennis-gold hover:text-tennis-navy"
@@ -126,23 +124,23 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
                     </div>
 
                     <button
-                className="text-white md:hidden"
-                onClick={() => setIsMobileMenuOpen(true)}
-            >
-                <Menu size={28} />
-            </button>
+                        className="text-white md:hidden"
+                        onClick={() => setIsMobileMenuOpen(true)}
+                    >
+                        <Menu size={28} />
+                    </button>
                 </div>
             </nav>
 
             <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed inset-0 z-[200] flex flex-col bg-tennis-navy px-6 py-8 md:hidden"
-          >
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, x: '100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '100%' }}
+                        transition={{ type: 'tween', duration: 0.3 }}
+                        className="fixed inset-0 z-[200] flex flex-col bg-tennis-navy px-6 py-8 md:hidden"
+                    >
                         <div className="flex items-center justify-between mb-12">
                             <span className="text-2xl font-bold text-white">MENY</span>
                             <button onClick={() => setIsMobileMenuOpen(false)} className="text-white">
@@ -162,11 +160,45 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
                                 </a>
                             ))}
 
-                            <div className="h-px w-full bg-white/10 my-4"></div>
 
-                            <button className="w-full bg-tennis-gold py-4 text-center text-sm font-bold uppercase tracking-widest text-tennis-navy">
-                                Boka Provträning
-                            </button>
+                            <div className="h-px w-full bg-white/10 my-4"></div>
+                            <div className="flex justify-center gap-6 text-xl font-bold uppercase mb-4">
+                                <button
+                                    onClick={() => changeLanguage('sv')}
+                                    className={`transition-colors ${i18n.language === 'sv' ? 'text-tennis-gold' : 'text-white'}`}
+                                >
+                                    SV
+                                </button>
+                                <span className="text-white/30">|</span>
+                                <button
+                                    onClick={() => changeLanguage('en')}
+                                    className={`transition-colors ${i18n.language === 'en' ? 'text-tennis-gold' : 'text-white'}`}
+                                >
+                                    EN
+                                </button>
+                                <span className="text-white/30">|</span>
+                                <button
+                                    onClick={() => changeLanguage('es')}
+                                    className={`transition-colors ${i18n.language === 'es' ? 'text-tennis-gold' : 'text-white'}`}
+                                >
+                                    ES
+                                </button>
+                                <span className="text-white/30">|</span>
+                                <button
+                                    onClick={() => changeLanguage('fr')}
+                                    className={`transition-colors ${i18n.language === 'fr' ? 'text-tennis-gold' : 'text-white'}`}
+                                >
+                                    FR
+                                </button>
+                            </div>
+
+                            <a
+                                href="#kontakt"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="w-full bg-tennis-gold py-4 text-center text-sm font-bold uppercase tracking-widest text-tennis-navy"
+                            >
+                                {t('hero.cta_book')}
+                            </a>
                         </div>
                     </motion.div>
                 )}
