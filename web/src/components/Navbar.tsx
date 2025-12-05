@@ -83,7 +83,7 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
                                 e.preventDefault();
                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
-                            className="flex items-center cursor-pointer transition-opacity hover:opacity-80"
+                            className="hidden md:flex items-center cursor-pointer transition-opacity hover:opacity-80"
                         >
                             <img
                                 src={logoUrl}
