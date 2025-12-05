@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { motion } from 'framer-motion';
 
 const BookingSection = () => {
     const form = useRef<HTMLFormElement>(null);
