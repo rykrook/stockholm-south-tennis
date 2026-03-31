@@ -19,6 +19,7 @@ export default {
         source: 'title',
         maxLength: 96,
       },
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: 'mainImage',
@@ -59,6 +60,12 @@ export default {
           {title: 'Alla åldrar', value: 'all'},
         ],
       },
+    },
+    {
+      name: 'content',
+      title: 'Detaljerat innehåll (Träningsupplägg/Schema)',
+      type: 'array', 
+      of: [{ type: 'block' }, { type: 'image' }]
     },
   ],
 }

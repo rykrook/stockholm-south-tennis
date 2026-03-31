@@ -1,33 +1,42 @@
 import { useState } from 'react';
-import BookingSection from './components/BookingSection';
-import CoachSection from './components/CoachSection';
-import Footer from './components/Footer';
-import Hero from './components/Hero';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Globala komponenter (visas på alla sidor)
 import Navbar from './components/Navbar';
 import NotificationBanner from './components/NotificationBanner';
-import ProgramsSection from './components/ProgramsSection';
+import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import Testimonials from './components/Testimonials';
-import GallerySection from './components/GallerySection';
 import SponsorsSection from './components/SponsorSection';
+
+// Sidor
+import Home from './pages/Home';
+// Import för de nya sidorna (skapa dessa filer i src/pages/ om du inte redan gjort det)
+import CampPage from './pages/CampPage';
+import ProgramDetail from './pages/ProgramDetail';
 
 function App() {
   const [isBannerVisible, setIsBannerVisible] = useState(false);
 
   return (
-    <main>
-     <NotificationBanner onVisibilityChange={setIsBannerVisible} />
+    <Router>
+      {/* Globala element högst upp */}
+      <NotificationBanner onVisibilityChange={setIsBannerVisible} />
       <Navbar hasBanner={isBannerVisible} />
-      <Hero />
-      <ProgramsSection />
-      <CoachSection />
-      <GallerySection />
-      <Testimonials />
-      <BookingSection />
-      <ScrollToTop/>
-      <SponsorsSection/>
-      <Footer/>
-    </main>
+
+      {/* Main-innehåll som byts ut beroende på URL */}
+      <main className="min-h-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/lager" element={<CampPage />} />
+          <Route path="/program/:slug" element={<ProgramDetail />} />
+        </Routes>
+      </main>
+
+      {/* Globala element längst ner */}
+      <SponsorsSection />
+      <Footer />
+      <ScrollToTop />
+    </Router>
   );
 }
 

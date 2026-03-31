@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Instagram, Facebook, Mail, MapPin, Phone } from 'lucide-react';
 import { client, urlFor } from '../lib/sanity';
 import localLogo from '../assets/localLogo.png';
+// 1. VIKTIGT: Importera Link
+import { Link } from 'react-router-dom';
 
 interface SiteSettings {
   address: string;
@@ -41,7 +43,7 @@ const Footer = () => {
               Vi utvecklar framtidens tennisspelare i södra Stockholm. Professionell träning med passion och kvalitet.
             </p>
             
-            {/* Sociala Ikoner */}
+            {/* Sociala Ikoner (Dessa förblir vanliga <a> eftersom de går till externa sidor) */}
             <div className="flex gap-4">
               {settings?.instagramUrl && (
                 <a 
@@ -66,13 +68,14 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* KOLUMN 2: Snabblänkar */}
+          {/* KOLUMN 2: Snabblänkar (UPPDATERAD MED LINK) */}
           <div>
             <h3 className="mb-6 font-bold uppercase tracking-widest text-tennis-gold">Hitta snabbt</h3>
             <ul className="space-y-4 text-sm text-gray-300">
-              <li><a href="#" className="hover:text-white transition-colors">Hem</a></li>
-              <li><a href="#program" className="hover:text-white transition-colors">Våra Program</a></li>
-              <li><a href="#om-oss" className="hover:text-white transition-colors">Om Akademin</a></li>
+              <li><Link to="/" className="hover:text-white transition-colors">Hem</Link></li>
+              <li><Link to="/#program" className="hover:text-white transition-colors">Våra Program</Link></li>
+              <li><Link to="/lager" className="hover:text-white transition-colors">Våra Läger</Link></li>
+              <li><Link to="/#om-oss" className="hover:text-white transition-colors">Om Akademin</Link></li>
             </ul>
           </div>
 

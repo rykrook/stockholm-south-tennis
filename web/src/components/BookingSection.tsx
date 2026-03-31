@@ -107,8 +107,9 @@ const BookingSection = () => {
                                 >
                                     <option value="Provträning">Provträning</option>
                                     <option value="Privatlektion">Privatlektion</option>
-                                    <option value="Vuxenkurs">Vuxenkurs</option>
                                     <option value="Juniorakademi">Juniorakademi</option>
+                                    <option value="Miniakademi">Miniakademi</option>
+                                    <option value="Läger">Läger</option>
                                     <option value="Annat">Annat</option>
                                 </select>
                             </div>

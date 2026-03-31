@@ -1,47 +1,24 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUp } from 'lucide-react';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const ScrollToTop = () => {
-    const [isVisible, setIsVisible] = useState(false);
+  const { pathname, hash } = useLocation();
 
-    useEffect(() => {
-        const toggleVisibility = () => {
-            if (window.scrollY > 300) {
-                setIsVisible(true);
-            } else {
-                setIsVisible(false);
-            }
-        };
+  useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.substring(1));
+      
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]); 
 
-        window.addEventListener('scroll', toggleVisibility);
-        return () => window.removeEventListener('scroll', toggleVisibility);
-    }, []);
-
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-        });
-    };
-
-    return (
-        <AnimatePresence>
-            {isVisible && (
-                <motion.button
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
-                    transition={{ duration: 0.3 }}
-                    onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-tennis-gold text-tennis-navy shadow-xl transition-colors hover:bg-white hover:text-tennis-navy sm:bottom-10 sm:right-10"
-                    aria-label="Tillbaka till toppen"
-                >
-                    <ArrowUp size={24} strokeWidth={3} />
-                </motion.button>
-            )}
-        </AnimatePresence>
-    );
+  return null; 
 };
 
 export default ScrollToTop;
