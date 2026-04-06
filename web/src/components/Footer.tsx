@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Instagram, Facebook, Mail, MapPin, Phone } from 'lucide-react';
 import { client, urlFor } from '../lib/sanity';
 import localLogo from '../assets/localLogo.png';
-// 1. VIKTIGT: Importera Link
 import { Link } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 
 interface SiteSettings {
   address: string;
@@ -17,6 +17,9 @@ interface SiteSettings {
 
 const Footer = () => {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
+  
+  const newsletterRef = useRef<HTMLFormElement>(null);
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const query = `*[_type == "siteSettings"][0]`;
@@ -25,6 +28,27 @@ const Footer = () => {
       .then(data => setSettings(data))
       .catch(console.error);
   }, []);
+
+  const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setNewsletterStatus('submitting');
+
+    if (!newsletterRef.current) return;
+
+    const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_NEWSLETTER_TEMPLATE_ID;
+    const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, newsletterRef.current, PUBLIC_KEY)
+    .then(() => {
+      setNewsletterStatus('success');
+      newsletterRef.current?.reset();
+    })
+    .catch((error) => {
+      console.error('EmailJS Error:', error);
+      setNewsletterStatus('error');
+    });
+  };
 
   return (
     <footer id="kontakt" className="bg-tennis-navy text-white pt-20 pb-10">
@@ -43,7 +67,7 @@ const Footer = () => {
               Vi utvecklar framtidens tennisspelare i södra Stockholm. Professionell träning med passion och kvalitet.
             </p>
             
-            {/* Sociala Ikoner (Dessa förblir vanliga <a> eftersom de går till externa sidor) */}
+            {/* Sociala Ikoner */}
             <div className="flex gap-4">
               {settings?.instagramUrl && (
                 <a 
@@ -68,7 +92,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* KOLUMN 2: Snabblänkar (UPPDATERAD MED LINK) */}
+          {/* KOLUMN 2: Snabblänkar */}
           <div>
             <h3 className="mb-6 font-bold uppercase tracking-widest text-tennis-gold">Hitta snabbt</h3>
             <ul className="space-y-4 text-sm text-gray-300">
@@ -122,16 +146,32 @@ const Footer = () => {
           <div>
             <h3 className="mb-6 font-bold uppercase tracking-widest text-tennis-gold">Nyhetsbrev</h3>
             <p className="mb-4 text-sm text-gray-400">Få de senaste nyheterna och inbjudningar till läger.</p>
-            <form className="flex flex-col gap-3">
-              <input 
-                type="email" 
-                placeholder="Din e-post" 
-                className="bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-tennis-gold focus:outline-none"
-              />
-              <button className="bg-tennis-gold py-3 text-sm font-bold uppercase tracking-widest text-tennis-navy hover:bg-white transition-colors">
-                Prenumerera
-              </button>
-            </form>
+            
+            {newsletterStatus === 'success' ? (
+              <div className="bg-white/10 border-l-2 border-tennis-gold p-4 text-sm text-white">
+                Tack! Du är nu tillagd i vårt nyhetsbrev.
+              </div>
+            ) : (
+              <form ref={newsletterRef} onSubmit={handleNewsletterSubmit} className="flex flex-col gap-3">
+                <input 
+                  type="email" 
+                  name="email"
+                  required
+                  placeholder="Din e-post" 
+                  className="bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-tennis-gold focus:outline-none"
+                />
+                <button 
+                  type="submit"
+                  disabled={newsletterStatus === 'submitting'}
+                  className="bg-tennis-gold py-3 text-sm font-bold uppercase tracking-widest text-tennis-navy hover:bg-white transition-colors disabled:opacity-50"
+                >
+                  {newsletterStatus === 'submitting' ? 'Registrerar...' : 'Prenumerera'}
+                </button>
+                {newsletterStatus === 'error' && (
+                  <span className="text-xs text-red-400 mt-1">Ett fel uppstod, försök igen senare.</span>
+                )}
+              </form>
+            )}
           </div>
 
         </div>

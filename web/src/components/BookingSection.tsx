@@ -22,9 +22,9 @@ const BookingSection = () => {
         e.preventDefault();
         setStatus('sending');
 
-        const SERVICE_ID = 'DITT_SERVICE_ID';
-        const TEMPLATE_ID = 'DITT_BOKNING_TEMPLATE_ID';
-        const PUBLIC_KEY = 'DIN_PUBLIC_KEY';
+        const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_BOOKING_TEMPLATE_ID;
+        const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
         if (form.current) {
             emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
@@ -66,7 +66,7 @@ const BookingSection = () => {
                                 <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">Namn</label>
                                 <input
                                     type="text"
-                                    name="from_name"
+                                    name="name"
                                     required
                                     className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
                                     placeholder="Ditt för- och efternamn"
@@ -78,9 +78,8 @@ const BookingSection = () => {
                                 <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">E-post</label>
                                 <input
                                     type="email"
-                                    name="reply_to"
+                                    name="email"
                                     required
-
                                     className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
                                     placeholder="din@email.se"
                                 />
@@ -101,8 +100,7 @@ const BookingSection = () => {
                             <div className="col-span-2 md:col-span-1">
                                 <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">Jag är intresserad av</label>
                                 <select
-                                    name="interest"
-
+                                    name="program"
                                     className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
                                 >
                                     <option value="Provträning">Provträning</option>

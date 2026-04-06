@@ -66,26 +66,26 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
         <>
             <nav
                 className={`fixed left-0 right-0 z-50 transition-all duration-300 transform 
-        ${isVisible ? 'translate-y-0' : '-translate-y-full'
-                    } 
-        ${hasBanner ? 'top-10' : 'top-0'
-                    }
+        ${isVisible ? 'translate-y-0' : '-translate-y-full'} 
+        ${hasBanner ? 'top-10' : 'top-0'}
         ${isScrolled
                         ? 'bg-tennis-navy/95 py-3 shadow-lg backdrop-blur-md'
                         : 'bg-transparent py-5'
                     }`}
             >
-                <div className="flex w-full items-center justify-between pl-0 pr-4 md:pl-0 md:pr-10">
+                {/* Lade till px-6 här för marginal på mobilen */}
+                <div className="flex w-full items-center justify-between px-6 md:pl-0 md:pr-10">
 
-                    <div className="text-2xl font-extrabold uppercase tracking-tighter text-white">
+                    <div className="text-2xl font-extrabold uppercase tracking-tighter text-white z-50 relative">
+                        {/* Tog bort 'hidden', anpassade bildhöjden för mobil */}
                         <Link
                             to="/"
-                            className="hidden md:flex items-center cursor-pointer transition-opacity hover:opacity-80"
+                            className="flex items-center cursor-pointer transition-opacity hover:opacity-80"
                         >
                             <img
                                 src={logoUrl}
                                 alt="Stockholm South Tennis Academy"
-                                className="h-20 w-auto object-contain -my-4 sm:h-32 sm:-my-6"
+                                className="h-12 w-auto object-contain sm:h-20 md:h-32 md:-my-6"
                             />
                         </Link>
                     </div>
@@ -120,7 +120,7 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
                     </div>
 
                     <button
-                        className="text-white md:hidden"
+                        className="text-white md:hidden z-50 relative focus:outline-none"
                         onClick={() => setIsMobileMenuOpen(true)}
                     >
                         <Menu size={28} />
@@ -145,15 +145,16 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
                         </div>
 
                         <div className="flex flex-col gap-6">
+                            {/* Uppdaterat till <Link> istället för <a> */}
                             {navLinks.map((link) => (
-                                <a
+                                <Link
                                     key={link.name}
-                                    href={link.href}
+                                    to={link.href}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="text-2xl font-bold uppercase tracking-wider text-white transition-colors hover:text-tennis-gold"
                                 >
                                     {link.name}
-                                </a>
+                                </Link>
                             ))}
 
 
@@ -187,13 +188,13 @@ const Navbar = ({ hasBanner }: NavbarProps) => {
                                     FR
                                 </button>
                             </div>
-                           <Link
-    to="/#kontakt"
-    onClick={() => setIsMobileMenuOpen(false)}
-    className="w-full bg-tennis-gold py-4 text-center text-sm font-bold uppercase tracking-widest text-tennis-navy block"
->
-    {t('hero.cta_book')}
-</Link>
+                            <Link
+                                to="/#kontakt"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="w-full bg-tennis-gold py-4 text-center text-sm font-bold uppercase tracking-widest text-tennis-navy block"
+                            >
+                                {t('hero.cta_book')}
+                            </Link>
                         </div>
                     </motion.div>
                 )}
