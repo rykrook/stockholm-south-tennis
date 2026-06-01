@@ -12,9 +12,9 @@ export default {
         {
             name: 'scrollingText',
             title: 'Rullande text',
-            type: 'string',
+            type: 'localeString',
             description: 'Den stora texten som rör sig i bakgrunden (t.ex. "PASSION • PERFORMANCE").',
-            initialValue: 'PASSION • PERFORMANCE • VICTORY',
+            initialValue: {sv: 'PASSION • PERFORMANCE • VICTORY'},
         },
         {
             name: 'images',

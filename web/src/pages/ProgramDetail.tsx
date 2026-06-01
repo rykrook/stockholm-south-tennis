@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { client, urlFor } from '../lib/sanity';
+import { useLocalize } from '../lib/locale';
 import { PortableText } from '@portabletext/react';
 import { ChevronLeft, Calendar, Clock, Trophy } from 'lucide-react';
 
@@ -12,6 +14,8 @@ interface ProgramData {
 }
 
 const ProgramDetail = () => {
+  const { t } = useTranslation();
+  const localize = useLocalize();
   const { slug } = useParams<{ slug: string }>();
   const [program, setProgram] = useState<ProgramData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +24,7 @@ const ProgramDetail = () => {
     const fetchProgram = async () => {
       const query = `*[_type == "program" && slug.current == $slug][0]{
         title,
-        image,
+        "image": mainImage,
         content,
         description
       }`;
@@ -38,87 +42,86 @@ const ProgramDetail = () => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  if (loading) return <div className="min-h-screen bg-white pt-32 text-center">Laddar...</div>;
-  if (!program) return <div className="min-h-screen bg-white pt-32 text-center">Programmet hittades inte.</div>;
+  if (loading) return <div className="min-h-screen bg-white pt-40 text-center text-gray-500">{t('program.loading')}</div>;
+  if (!program) return <div className="min-h-screen bg-white pt-40 text-center text-gray-500">{t('program.notfound')}</div>;
+
+  const title = localize(program.title);
+  const content = localize(program.content);
+
+  const facts = [
+    { icon: Calendar, label: t('program.period_label'), value: t('program.period_value') },
+    { icon: Clock, label: t('program.length_label'), value: t('program.length_value') },
+    { icon: Trophy, label: t('program.level_label'), value: t('program.level_value') },
+  ];
 
   return (
-    <div className="bg-white min-h-screen pb-20">
-      
-      <div className="relative h-[40vh] md:h-[50vh] w-full overflow-hidden bg-tennis-navy">
+    <div className="min-h-screen bg-white pb-20">
+      {/* Hero header */}
+      <div className="relative h-[45vh] w-full overflow-hidden bg-navy-950 md:h-[55vh]">
         {program.image && (
-          <img 
-            src={urlFor(program.image).url()} 
-            alt={program.title}
-            className="absolute inset-0 h-full w-full object-cover opacity-60"
+          <img
+            src={urlFor(program.image).width(2000).url()}
+            alt={title}
+            className="absolute inset-0 h-full w-full object-cover opacity-40"
           />
         )}
-        
+        {/* Keep header dark at top (navbar) and center (title) regardless of image brightness */}
+        <div className="absolute inset-0 bg-navy-950/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/90 via-navy-950/30 to-navy-950" />
+
         <div className="absolute inset-0 flex items-center justify-center pt-24">
-          <div className="text-center px-6">
-            <Link 
-              to="/#program" 
-              className="inline-flex items-center text-tennis-gold uppercase text-xs font-bold tracking-widest mb-4 hover:text-white transition-colors"
+          <div className="px-6 text-center">
+            <Link
+              to="/#program"
+              className="mb-5 inline-flex items-center text-xs font-bold uppercase tracking-widest text-tennis-gold transition-colors hover:text-white"
             >
-              <ChevronLeft size={16} className="mr-1" /> Tillbaka till alla program
+              <ChevronLeft size={16} className="mr-1" /> {t('program.back')}
             </Link>
-            <h1 className="text-4xl md:text-6xl font-black uppercase text-white tracking-tighter">
-              {program.title}
+            <h1 className="font-display text-5xl uppercase leading-[0.95] tracking-tight text-white md:text-7xl">
+              {title}
             </h1>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 mt-12">
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          
-          {/* Vänster: Detaljerat innehåll (Schema/Upplägg) */}
-          <div className="md:col-span-2 prose prose-lg max-w-none prose-headings:uppercase prose-headings:text-tennis-navy prose-strong:text-tennis-navy">
-            <h2 className="text-2xl font-bold text-tennis-navy uppercase mb-6 pb-2 border-b-2 border-tennis-gold inline-block">
-              Träningsupplägg & Detaljer
+      {/* Body */}
+      <div className="mx-auto mt-14 max-w-4xl px-6">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+          {/* Content */}
+          <div className="prose prose-lg max-w-none md:col-span-2 prose-headings:uppercase prose-headings:text-tennis-navy prose-strong:text-tennis-navy">
+            <h2 className="mb-6 inline-block border-b-2 border-tennis-gold pb-2 font-display text-2xl uppercase tracking-wide text-tennis-navy">
+              {t('program.details_title')}
             </h2>
-            {program.content ? (
-              <PortableText value={program.content} />
+            {Array.isArray(content) && content.length > 0 ? (
+              <PortableText value={content} />
             ) : (
-              <p className="text-gray-600">{program.description}</p>
+              <p className="text-gray-600">{localize(program.description)}</p>
             )}
           </div>
 
-          {/* Höger: Snabbinfo Sidebar */}
-          <div className="bg-gray-50 p-8 rounded-sm h-fit border-t-4 border-tennis-navy">
-            <h3 className="font-bold uppercase text-tennis-navy mb-6 tracking-wider text-sm">Snabbfakta</h3>
+          {/* Sidebar */}
+          <div className="h-fit border-t-4 border-tennis-gold bg-tennis-cream p-8 shadow-card">
+            <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-tennis-navy">{t('program.quickfacts')}</h3>
             <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <Calendar className="text-tennis-gold shrink-0" size={20} />
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-400">Period</p>
-                  <p className="text-sm font-semibold text-tennis-navy">Terminsvis / Lov</p>
+              {facts.map((fact) => (
+                <div key={fact.label} className="flex items-start gap-4">
+                  <fact.icon className="shrink-0 text-tennis-gold" size={20} />
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-gray-400">{fact.label}</p>
+                    <p className="text-sm font-semibold text-tennis-navy">{fact.value}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <Clock className="text-tennis-gold shrink-0" size={20} />
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-400">Passlängd</p>
-                  <p className="text-sm font-semibold text-tennis-navy">60 - 90 minuter</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <Trophy className="text-tennis-gold shrink-0" size={20} />
-                <div>
-                  <p className="text-xs font-bold uppercase text-gray-400">Nivå</p>
-                  <p className="text-sm font-semibold text-tennis-navy">Alla nivåer välkomna</p>
-                </div>
-              </div>
+              ))}
             </div>
-            
-            <Link 
+
+            <Link
               to="/#kontakt"
-              className="mt-10 block w-full bg-tennis-navy text-white text-center py-4 text-xs font-bold uppercase tracking-widest hover:bg-tennis-gold hover:text-tennis-navy transition-all"
+              className="group relative mt-10 block w-full overflow-hidden bg-tennis-navy py-4 text-center text-xs font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:text-tennis-navy"
             >
-              Intresseanmälan
+              <span className="absolute inset-0 -translate-x-full bg-tennis-gold transition-transform duration-300 ease-out group-hover:translate-x-0" />
+              <span className="relative">{t('program.cta')}</span>
             </Link>
           </div>
-
         </div>
       </div>
     </div>

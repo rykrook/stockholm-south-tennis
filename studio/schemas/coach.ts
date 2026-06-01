@@ -12,8 +12,7 @@ export default {
     {
       name: 'role',
       title: 'Roll / Titel',
-      type: 'string',
-      initialValue: 'Head Coach',
+      type: 'localeString',
     },
     {
         name: 'email',
@@ -31,13 +30,12 @@ export default {
     {
       name: 'bio',
       title: 'Kort Biografi',
-      type: 'text',
-      rows: 4,
+      type: 'localeText',
     },
     {
       name: 'philosophy',
       title: 'Tränarfilosofi (Citat)',
-      type: 'string',
+      type: 'localeString',
       description: 'Ett kort, kraftfullt citat. T.ex: "Hard work beats talent..."'
     },
     {

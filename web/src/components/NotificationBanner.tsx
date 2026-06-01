@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { client } from '../lib/sanity';
+import { useLocalize } from '../lib/locale';
 
 interface Props {
   onVisibilityChange: (isVisible: boolean) => void;
@@ -9,6 +10,7 @@ interface Props {
 const NotificationBanner = ({ onVisibilityChange }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const [data, setData] = useState<any>(null);
+  const localize = useLocalize();
 
   useEffect(() => {
     const query = `*[_type == "siteSettings"][0]{
@@ -43,10 +45,10 @@ const NotificationBanner = ({ onVisibilityChange }: Props) => {
       <div className="text-center text-xs font-bold uppercase tracking-widest md:text-sm truncate px-2">
         {data.bannerLink ? (
           <a href={data.bannerLink} className="hover:underline">
-            {data.bannerText}
+            {localize(data.bannerText)}
           </a>
         ) : (
-          <span>{data.bannerText}</span>
+          <span>{localize(data.bannerText)}</span>
         )}
       </div>
 

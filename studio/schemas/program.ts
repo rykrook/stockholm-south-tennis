@@ -6,7 +6,7 @@ export default {
     {
       name: 'title',
       title: 'Titel',
-      type: 'string',
+      type: 'localeString',
       description: 'T.ex. Junior Elite, Vuxenkurs, Privatlektioner',
       validation: (Rule: any) => Rule.required(),
     },
@@ -14,9 +14,9 @@ export default {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      description: 'Används för URL:en (t.ex. /program/junior-elite)',
+      description: 'Används för URL:en (t.ex. /program/junior-elite). Genereras från den svenska titeln.',
       options: {
-        source: 'title',
+        source: (doc: any) => doc?.title?.sv,
         maxLength: 96,
       },
       validation: (Rule: any) => Rule.required(),
@@ -32,20 +32,18 @@ export default {
     {
       name: 'description',
       title: 'Kort beskrivning',
-      type: 'text',
-      rows: 3,
+      type: 'localeText',
       description: 'Syns på startsidan i översikten.',
     },
     {
       name: 'detailedDescription',
       title: 'Detaljerad beskrivning',
-      type: 'array', 
-      of: [{type: 'block'}],
+      type: 'localeBlock',
     },
     {
       name: 'price',
       title: 'Pris',
-      type: 'string',
+      type: 'localeString',
       description: 'T.ex. "2500 kr / termin" eller "Från 800 kr/h"',
     },
     {
@@ -64,8 +62,13 @@ export default {
     {
       name: 'content',
       title: 'Detaljerat innehåll (Träningsupplägg/Schema)',
-      type: 'array', 
-      of: [{ type: 'block' }, { type: 'image' }]
+      type: 'localeBlock',
     },
   ],
+  preview: {
+    select: {
+      title: 'title.sv',
+      media: 'mainImage',
+    },
+  },
 }

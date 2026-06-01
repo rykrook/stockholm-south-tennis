@@ -1,86 +1,143 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-// 1. VIKTIGT: Importera Link från react-router-dom
-import { Link } from 'react-router-dom'; 
-import { client, urlFor } from '../lib/sanity'; // (eller ../sanity beroende på din filstruktur)
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ArrowUpRight } from 'lucide-react';
+import { client, urlFor } from '../lib/sanity';
+import { useLocalize } from '../lib/locale';
+
+interface Program {
+  _id: string;
+  title: string;
+  description: string;
+  slug?: string;
+  mainImage?: any;
+  price?: string;
+  ageGroup?: string;
+}
 
 const ProgramsSection = () => {
-  const [programs, setPrograms] = useState<any[]>([]);
+  const { t } = useTranslation();
+  const localize = useLocalize();
+  const [programs, setPrograms] = useState<Program[]>([]);
 
   useEffect(() => {
-    // 2. VIKTIGT: Vi måste hämta "slug.current" från Sanity för att veta vilken URL vi ska till
     const query = `*[_type == "program"] | order(_createdAt asc) {
       _id,
       title,
       description,
-      "slug": slug.current, 
+      "slug": slug.current,
       mainImage,
       price,
       ageGroup
     }`;
-
     client.fetch(query).then(setPrograms).catch(console.error);
   }, []);
 
+  const ageLabel = (group?: string) =>
+    group ? t(`programs.age_${group}`, { defaultValue: '' }) : '';
+
+  const CardInner = ({ program, index }: { program: Program; index: number }) => (
+    <>
+      {/* Image */}
+      <div className="relative h-56 overflow-hidden bg-tennis-navy">
+        {program.mainImage ? (
+          <img
+            src={urlFor(program.mainImage).width(800).height(600).url()}
+            alt={localize(program.title)}
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          />
+        ) : (
+          <div className="h-full w-full bg-gradient-to-br from-navy-800 to-navy-950" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-tennis-navy via-tennis-navy/25 to-transparent" />
+
+        {/* Index number */}
+        <span className="absolute left-5 top-3 font-display text-5xl leading-none text-white/25">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+
+        {/* Age chip */}
+        {ageLabel(program.ageGroup) && (
+          <span className="absolute right-4 top-4 rounded-full bg-tennis-gold/90 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-tennis-navy backdrop-blur-sm">
+            {ageLabel(program.ageGroup)}
+          </span>
+        )}
+
+        {/* Title over image */}
+        <h3 className="absolute inset-x-5 bottom-4 font-display text-2xl uppercase leading-tight tracking-wide text-white">
+          {localize(program.title)}
+        </h3>
+      </div>
+
+      {/* Body */}
+      <div className="flex flex-1 flex-col p-7">
+        {localize(program.price) && (
+          <span className="mb-3 inline-flex w-fit items-center text-sm font-bold uppercase tracking-wider text-tennis-gold">
+            {localize(program.price)}
+          </span>
+        )}
+        <p className="mb-6 flex-1 leading-relaxed text-gray-600">{localize(program.description)}</p>
+
+        <div className="mt-auto border-t border-gray-100 pt-5">
+          {program.slug ? (
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-tennis-navy transition-colors group-hover:text-tennis-gold">
+              {t('programs.cta')}
+              <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </span>
+          ) : (
+            <span className="text-xs text-red-500">{t('programs.missing_slug')}</span>
+          )}
+        </div>
+      </div>
+    </>
+  );
+
   return (
-    <section id="program" className="bg-gray-50 py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-6">
-        
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl font-extrabold uppercase tracking-tight text-tennis-navy md:text-5xl">
-            Våra Program
+    <section id="program" className="relative overflow-hidden bg-tennis-cream py-24 md:py-32">
+      {/* Decorative oversized faded word */}
+      <span className="pointer-events-none absolute -top-6 left-0 select-none font-display text-[8rem] uppercase leading-none text-tennis-navy/[0.03] md:text-[14rem]">
+        Tennis
+      </span>
+
+      <div className="relative mx-auto max-w-7xl px-6">
+        {/* Header */}
+        <div className="mb-14 max-w-2xl">
+          <p className="mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-tennis-gold">
+            <span className="h-px w-8 bg-tennis-gold" />
+            {t('programs.eyebrow')}
+          </p>
+          <h2 className="font-display text-4xl uppercase leading-[0.95] tracking-tight text-tennis-navy md:text-6xl">
+            {t('programs.title')}
           </h2>
+          <p className="mt-5 text-lg leading-relaxed text-gray-600">{t('programs.subtitle')}</p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* Grid */}
+        <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           {programs.map((program, index) => (
             <motion.div
               key={program._id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="group flex flex-col overflow-hidden rounded-sm bg-white shadow-md transition-all hover:shadow-xl"
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ delay: index * 0.08, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Bild */}
-              <div className="relative h-32 overflow-hidden bg-tennis-navy">
-                {program.mainImage && (
-                  <img
-                    src={urlFor(program.mainImage).width(600).url()}
-                    alt={program.title}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                )}
-              </div>
-
-              {/* Textinnehåll */}
-              <div className="flex flex-1 flex-col p-8">
-                <h3 className="mb-3 text-2xl font-bold uppercase text-tennis-navy">
-                  {program.title}
-                </h3>
-                <p className="mb-6 flex-1 text-gray-600">
-                  {program.description}
-                </p>
-
-                {/* 3. VIKTIGT: Använd <Link> istället för <a> för att byta sida utan att ladda om webbläsaren */}
-                <div className="mt-auto border-t border-gray-100 pt-6">
-                  {program.slug ? (
-                    <Link
-                      to={`/program/${program.slug}`}
-                      className="inline-flex items-center text-sm font-bold uppercase tracking-widest text-tennis-gold transition-colors hover:text-tennis-navy"
-                    >
-                      Läs mer om upplägg & schema
-                      <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
-                    </Link>
-                  ) : (
-                    <span className="text-xs text-red-500">Saknar slug i Sanity</span>
-                  )}
+              {program.slug ? (
+                <Link
+                  to={`/program/${program.slug}`}
+                  className="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-card transition-all duration-500 hover:-translate-y-2 hover:shadow-card-hover"
+                >
+                  <CardInner program={program} index={index} />
+                </Link>
+              ) : (
+                <div className="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-card">
+                  <CardInner program={program} index={index} />
                 </div>
-              </div>
+              )}
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import { Instagram, Facebook, Mail, MapPin, Phone } from 'lucide-react';
 import { client, urlFor } from '../lib/sanity';
 import localLogo from '../assets/localLogo.png';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import emailjs from '@emailjs/browser';
 
 interface SiteSettings {
@@ -16,23 +17,19 @@ interface SiteSettings {
 }
 
 const Footer = () => {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<SiteSettings | null>(null);
-  
   const newsletterRef = useRef<HTMLFormElement>(null);
   const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const query = `*[_type == "siteSettings"][0]`;
-    
-    client.fetch(query)
-      .then(data => setSettings(data))
-      .catch(console.error);
+    client.fetch(query).then(setSettings).catch(console.error);
   }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setNewsletterStatus('submitting');
-
     if (!newsletterRef.current) return;
 
     const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -40,51 +37,51 @@ const Footer = () => {
     const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, newsletterRef.current, PUBLIC_KEY)
-    .then(() => {
-      setNewsletterStatus('success');
-      newsletterRef.current?.reset();
-    })
-    .catch((error) => {
-      console.error('EmailJS Error:', error);
-      setNewsletterStatus('error');
-    });
+      .then(() => {
+        setNewsletterStatus('success');
+        newsletterRef.current?.reset();
+      })
+      .catch((error) => {
+        console.error('EmailJS Error:', error);
+        setNewsletterStatus('error');
+      });
   };
 
   return (
-    <footer id="kontakt" className="bg-tennis-navy text-white pt-20 pb-10">
-      <div className="mx-auto max-w-7xl px-6">
-        
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 mb-16">
-          
-          {/* KOLUMN 1: Logo & Info */}
+    <footer id="kontakt" className="relative overflow-hidden bg-navy-950 pt-20 pb-10 text-white">
+      {/* gold hairline accent */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-tennis-gold/60 to-transparent" />
+      <div className="pointer-events-none absolute -left-32 top-0 h-80 w-80 rounded-full bg-tennis-gold/5 blur-[120px]" />
+
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="mb-16 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+          {/* Logo & blurb */}
           <div className="space-y-6">
-           <img 
-              src={settings?.logo ? urlFor(settings.logo).url() : localLogo} 
-              alt="SST Logo" 
-              className="h-12 w-auto -ml-10" 
+            <img
+              src={settings?.logo ? urlFor(settings.logo).url() : localLogo}
+              alt="Stockholm South Tennis Academy"
+              className="-ml-10 h-12 w-auto brightness-0 invert"
             />
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Vi utvecklar framtidens tennisspelare i södra Stockholm. Professionell träning med passion och kvalitet.
-            </p>
-            
-            {/* Sociala Ikoner */}
+            <p className="text-sm leading-relaxed text-gray-400">{t('footer.tagline')}</p>
             <div className="flex gap-4">
               {settings?.instagramUrl && (
-                <a 
-                  href={settings.instagramUrl} 
-                  target="_blank" 
+                <a
+                  href={settings.instagramUrl}
+                  target="_blank"
                   rel="noreferrer"
-                  className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-tennis-gold hover:text-tennis-navy"
+                  aria-label="Instagram"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:-translate-y-0.5 hover:bg-tennis-gold hover:text-tennis-navy"
                 >
                   <Instagram size={20} />
                 </a>
               )}
               {settings?.facebookUrl && (
-                <a 
+                <a
                   href={settings.facebookUrl}
-                  target="_blank" 
+                  target="_blank"
                   rel="noreferrer"
-                  className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-tennis-gold hover:text-tennis-navy"
+                  aria-label="Facebook"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-all hover:-translate-y-0.5 hover:bg-tennis-gold hover:text-tennis-navy"
                 >
                   <Facebook size={20} />
                 </a>
@@ -92,26 +89,24 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* KOLUMN 2: Snabblänkar */}
+          {/* Quick links */}
           <div>
-            <h3 className="mb-6 font-bold uppercase tracking-widest text-tennis-gold">Hitta snabbt</h3>
-            <ul className="space-y-4 text-sm text-gray-300">
-              <li><Link to="/" className="hover:text-white transition-colors">Hem</Link></li>
-              <li><Link to="/#program" className="hover:text-white transition-colors">Våra Program</Link></li>
-              <li><Link to="/lager" className="hover:text-white transition-colors">Våra Läger</Link></li>
-              <li><Link to="/#om-oss" className="hover:text-white transition-colors">Om Akademin</Link></li>
+            <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-tennis-gold">{t('footer.quicklinks')}</h3>
+            <ul className="space-y-3 text-sm text-gray-300">
+              <li><Link to="/" className="transition-colors hover:text-tennis-gold">{t('nav.home')}</Link></li>
+              <li><Link to="/#program" className="transition-colors hover:text-tennis-gold">{t('nav.programs')}</Link></li>
+              <li><Link to="/lager" className="transition-colors hover:text-tennis-gold">{t('nav.camps')}</Link></li>
+              <li><Link to="/#om-oss" className="transition-colors hover:text-tennis-gold">{t('footer.about')}</Link></li>
             </ul>
           </div>
 
-          {/* KOLUMN 3: Kontakt  */}
+          {/* Contact */}
           <div>
-            <h3 className="mb-6 font-bold uppercase tracking-widest text-tennis-gold">Kontakt</h3>
+            <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-tennis-gold">{t('footer.contact')}</h3>
             <ul className="space-y-4 text-sm text-gray-300">
-              
-              {/* Adress */}
               {(settings?.address || settings?.postalAddress) && (
                 <li className="flex items-start gap-3">
-                  <MapPin size={18} className="text-tennis-gold shrink-0 mt-1" />
+                  <MapPin size={18} className="mt-0.5 shrink-0 text-tennis-gold" />
                   <span>
                     Tumba Tenniscenter<br />
                     {settings.address}<br />
@@ -119,65 +114,55 @@ const Footer = () => {
                   </span>
                 </li>
               )}
-
-              {/* Email */}
               {settings?.email && (
                 <li className="flex items-center gap-3">
-                  <Mail size={18} className="text-tennis-gold shrink-0" />
-                  <a href={`mailto:${settings.email}`} className="hover:text-white">
-                    {settings.email}
-                  </a>
+                  <Mail size={18} className="shrink-0 text-tennis-gold" />
+                  <a href={`mailto:${settings.email}`} className="transition-colors hover:text-tennis-gold">{settings.email}</a>
                 </li>
               )}
-
-              {/* Telefon */}
               {settings?.phone && (
                 <li className="flex items-center gap-3">
-                  <Phone size={18} className="text-tennis-gold shrink-0" />
-                  <a href={`tel:${settings.phone}`} className="hover:text-white">
-                    {settings.phone}
-                  </a>
+                  <Phone size={18} className="shrink-0 text-tennis-gold" />
+                  <a href={`tel:${settings.phone}`} className="transition-colors hover:text-tennis-gold">{settings.phone}</a>
                 </li>
               )}
             </ul>
           </div>
 
-          {/* KOLUMN 4: Nyhetsbrev */}
+          {/* Newsletter */}
           <div>
-            <h3 className="mb-6 font-bold uppercase tracking-widest text-tennis-gold">Nyhetsbrev</h3>
-            <p className="mb-4 text-sm text-gray-400">Få de senaste nyheterna och inbjudningar till läger.</p>
-            
+            <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-tennis-gold">{t('footer.newsletter')}</h3>
+            <p className="mb-4 text-sm text-gray-400">{t('footer.newsletter_text')}</p>
             {newsletterStatus === 'success' ? (
-              <div className="bg-white/10 border-l-2 border-tennis-gold p-4 text-sm text-white">
-                Tack! Du är nu tillagd i vårt nyhetsbrev.
+              <div className="border-l-2 border-tennis-gold bg-white/10 p-4 text-sm text-white">
+                {t('footer.newsletter_success')}
               </div>
             ) : (
               <form ref={newsletterRef} onSubmit={handleNewsletterSubmit} className="flex flex-col gap-3">
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   name="email"
                   required
-                  placeholder="Din e-post" 
-                  className="bg-white/5 border border-white/10 px-4 py-3 text-sm text-white placeholder-gray-500 focus:border-tennis-gold focus:outline-none"
+                  placeholder={t('footer.newsletter_ph')}
+                  className="border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-gray-500 transition-colors focus:border-tennis-gold focus:outline-none"
                 />
-                <button 
+                <button
                   type="submit"
                   disabled={newsletterStatus === 'submitting'}
-                  className="bg-tennis-gold py-3 text-sm font-bold uppercase tracking-widest text-tennis-navy hover:bg-white transition-colors disabled:opacity-50"
+                  className="bg-tennis-gold py-3 text-sm font-bold uppercase tracking-widest text-tennis-navy transition-colors hover:bg-white disabled:opacity-50"
                 >
-                  {newsletterStatus === 'submitting' ? 'Registrerar...' : 'Prenumerera'}
+                  {newsletterStatus === 'submitting' ? t('footer.subscribing') : t('footer.subscribe')}
                 </button>
                 {newsletterStatus === 'error' && (
-                  <span className="text-xs text-red-400 mt-1">Ett fel uppstod, försök igen senare.</span>
+                  <span className="mt-1 text-xs text-red-400">{t('footer.newsletter_error')}</span>
                 )}
               </form>
             )}
           </div>
-
         </div>
 
         <div className="border-t border-white/10 pt-8 text-center text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Stockholm South Tennis Academy. Alla rättigheter reserverade.</p>
+          <p>&copy; {new Date().getFullYear()} Stockholm South Tennis Academy. {t('footer.rights')}</p>
         </div>
       </div>
     </footer>

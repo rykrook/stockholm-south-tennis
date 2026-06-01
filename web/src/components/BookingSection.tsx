@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
+import { useTranslation } from 'react-i18next';
 import { client } from '../lib/sanity';
 import BackgroundContainer from './BackgroundContainer';
 
 const BookingSection = () => {
+    const { t } = useTranslation();
     const form = useRef<HTMLFormElement>(null);
     const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-
     const [bgSettings, setBgSettings] = useState<any>(null);
 
     useEffect(() => {
@@ -38,112 +39,87 @@ const BookingSection = () => {
         }
     };
 
+    const inputClass =
+        "w-full border-b-2 border-gray-200 bg-gray-50/70 px-4 py-3 text-gray-900 transition-colors focus:border-tennis-gold focus:bg-white focus:outline-none";
+    const labelClass =
+        "mb-2 block text-xs font-bold uppercase tracking-widest text-tennis-navy";
+
     return (
-        <section id="kontakt" className="bg-tennis-navy py-24 relative overflow-hidden">
+        <section id="kontakt" className="relative overflow-hidden bg-tennis-navy">
             <BackgroundContainer
                 id="kontakt"
                 settings={bgSettings}
                 fallbackColor="bg-tennis-navy"
-                className="py-24"
+                className="py-24 md:py-32"
             >
-
-                <div className="container mx-auto px-6 relative z-10">
-                    <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 shadow-2xl">
-
-                        <div className="text-center mb-10">
-                            <h2 className="text-3xl font-extrabold uppercase text-tennis-navy mb-4">
-                                Boka din <span className="text-tennis-gold">träning</span>
-                            </h2>
-                            <p className="text-gray-600">
-                                Fyll i formuläret så återkommer vi med tider och upplägg som passar dig.
+                <div className="container relative z-10 mx-auto px-6">
+                    <div className="mx-auto max-w-3xl bg-white p-8 shadow-2xl md:p-12">
+                        <div className="mb-10 text-center">
+                            <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-tennis-gold">
+                                {t('booking.eyebrow')}
                             </p>
+                            <h2 className="font-display text-4xl uppercase tracking-tight text-tennis-navy md:text-5xl">
+                                {t('booking.title_1')} <span className="text-gold-gradient">{t('booking.title_2')}</span>
+                            </h2>
+                            <p className="mt-4 text-gray-600">{t('booking.subtitle')}</p>
                         </div>
 
                         <form ref={form} onSubmit={sendEmail} className="grid grid-cols-1 gap-6 md:grid-cols-2">
-
-                            {/* Namn */}
                             <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">Namn</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    required
-                                    className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
-                                    placeholder="Ditt för- och efternamn"
-                                />
+                                <label className={labelClass}>{t('booking.name')}</label>
+                                <input type="text" name="name" required className={inputClass} placeholder={t('booking.name_ph')} />
                             </div>
 
-                            {/* Email */}
                             <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">E-post</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    required
-                                    className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
-                                    placeholder="din@email.se"
-                                />
+                                <label className={labelClass}>{t('booking.email')}</label>
+                                <input type="email" name="email" required className={inputClass} placeholder="din@email.se" />
                             </div>
 
-                            {/* Telefon */}
                             <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">Telefon</label>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
-                                    placeholder="070-123 45 67"
-                                />
+                                <label className={labelClass}>{t('booking.phone')}</label>
+                                <input type="tel" name="phone" className={inputClass} placeholder="070-123 45 67" />
                             </div>
 
-                            {/* Intresse (Dropdown) */}
                             <div className="col-span-2 md:col-span-1">
-                                <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">Jag är intresserad av</label>
-                                <select
-                                    name="program"
-                                    className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
-                                >
-                                    <option value="Provträning">Provträning</option>
-                                    <option value="Privatlektion">Privatlektion</option>
-                                    <option value="Juniorakademi">Juniorakademi</option>
-                                    <option value="Miniakademi">Miniakademi</option>
-                                    <option value="Läger">Läger</option>
-                                    <option value="Annat">Annat</option>
+                                <label className={labelClass}>{t('booking.interest')}</label>
+                                <select name="program" className={inputClass}>
+                                    <option value="Provträning">{t('booking.opt_trial')}</option>
+                                    <option value="Privatlektion">{t('booking.opt_private')}</option>
+                                    <option value="Juniorakademi">{t('booking.opt_junior')}</option>
+                                    <option value="Miniakademi">{t('booking.opt_mini')}</option>
+                                    <option value="Läger">{t('booking.opt_camp')}</option>
+                                    <option value="Annat">{t('booking.opt_other')}</option>
                                 </select>
                             </div>
 
-                            {/* Meddelande */}
                             <div className="col-span-2">
-                                <label className="block text-xs font-bold uppercase tracking-widest text-tennis-navy mb-2">Meddelande</label>
-                                <textarea
-                                    name="message"
-                                    rows={4}
-                                    className="w-full border-b-2 border-gray-200 bg-gray-50 px-4 py-3 text-gray-900 focus:border-tennis-gold focus:outline-none transition-colors"
-                                    placeholder="Berätta lite om din nivå eller önskemål..."
-                                ></textarea>
+                                <label className={labelClass}>{t('booking.message')}</label>
+                                <textarea name="message" rows={4} className={inputClass} placeholder={t('booking.message_ph')} />
                             </div>
 
-                            {/* Submit Knapp */}
                             <div className="col-span-2 mt-4">
                                 <button
                                     type="submit"
                                     disabled={status === 'sending' || status === 'success'}
-                                    className={`w-full py-4 text-sm font-bold uppercase tracking-widest transition-all 
+                                    className={`group relative w-full overflow-hidden py-4 text-sm font-bold uppercase tracking-widest transition-all
                   ${status === 'success'
-                                            ? 'bg-green-600 text-white cursor-default'
-                                            : 'bg-tennis-navy text-white hover:bg-tennis-gold hover:text-tennis-navy'
+                                            ? 'cursor-default bg-green-600 text-white'
+                                            : 'bg-tennis-navy text-white hover:text-tennis-navy'
                                         }`}
                                 >
-                                    {status === 'sending' ? 'Skickar...' : status === 'success' ? 'Tack för din förfrågan!' : 'Skicka Förfrågan'}
+                                    {status !== 'success' && (
+                                        <span className="absolute inset-0 -translate-x-full bg-tennis-gold transition-transform duration-300 ease-out group-hover:translate-x-0" />
+                                    )}
+                                    <span className="relative">
+                                        {status === 'sending' ? t('booking.sending') : status === 'success' ? t('booking.success') : t('booking.submit')}
+                                    </span>
                                 </button>
                                 {status === 'error' && (
-                                    <p className="text-red-500 text-sm mt-2 text-center">Något gick fel. Försök igen eller maila oss direkt.</p>
+                                    <p className="mt-2 text-center text-sm text-red-500">{t('booking.error')}</p>
                                 )}
                             </div>
-
                         </form>
                     </div>
-
                 </div>
             </BackgroundContainer>
         </section>

@@ -6,7 +6,7 @@ export default {
     {
       name: 'title',
       title: 'Titel',
-      type: 'string',
+      type: 'localeString',
       description: 'T.ex. "Träningsläger Frankrike" eller "Sommarcamp 2024"',
     },
     {
@@ -18,9 +18,8 @@ export default {
    {
       name: 'text',
       title: 'Beskrivning',
-      type: 'array',
+      type: 'localeBlock',
       description: 'Använd verktygsfältet för att formatera texten, lägga till listor etc.',
-      of: [{ type: 'block' }]
     },
     {
       name: 'gallery',
@@ -32,7 +31,7 @@ export default {
   ],
   preview: {
     select: {
-      title: 'title',
+      title: 'title.sv',
       media: 'gallery.0',
     },
   },

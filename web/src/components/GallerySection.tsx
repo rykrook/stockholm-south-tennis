@@ -1,8 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { client, urlFor } from '../lib/sanity';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { useLocalize } from '../lib/locale';
 
 const GallerySection = () => {
+    const { t } = useTranslation();
+    const localize = useLocalize();
     const [data, setData] = useState<any>(null);
     const sectionRef = useRef(null);
 
@@ -44,7 +48,7 @@ const GallerySection = () => {
                             style={{ x }}
                             className="whitespace-nowrap text-[4rem] md:text-[6rem] font-black uppercase leading-none text-tennis-navy opacity-10"
                         >
-                            {Array(12).fill(data.gallery.scrollingText).map((text, i) => (
+                            {Array(12).fill(localize(data.gallery.scrollingText)).map((text, i) => (
                                 <span key={i}>
                                     {text} &nbsp; • &nbsp;
                                 </span>
@@ -55,11 +59,11 @@ const GallerySection = () => {
                     <div className="mx-auto max-w-7xl px-6 relative z-10">
 
                         <div className="mb-16 text-center">
-                            <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-tennis-gold">
-                                Life at the Academy
+                            <h2 className="text-sm font-bold uppercase tracking-[0.3em] text-tennis-gold">
+                                {t('gallery.eyebrow')}
                             </h2>
-                            <h3 className="mt-2 text-3xl font-extrabold uppercase text-tennis-navy md:text-5xl">
-                                In Action
+                            <h3 className="mt-3 font-display text-4xl uppercase tracking-tight text-tennis-navy md:text-6xl">
+                                {t('gallery.title')}
                             </h3>
                         </div>
 
@@ -107,7 +111,7 @@ const GallerySection = () => {
                                     rel="noreferrer"
                                     className="inline-block border-b-2 border-tennis-navy pb-1 text-sm font-bold uppercase tracking-widest text-tennis-navy hover:text-tennis-gold hover:border-tennis-gold transition-colors"
                                 >
-                                    Följ oss på Instagram
+                                    {t('gallery.instagram')}
                                 </a>
                             </div>
                         )}

@@ -58,20 +58,19 @@ export default {
         {
             name: 'heroTitle',
             title: 'Hero Rubrik (Rad 1)',
-            type: 'string',
+            type: 'localeString',
             description: 'Den vita texten. T.ex: "Utveckla ditt spel"',
         },
         {
             name: 'heroTitleAccent',
             title: 'Hero Rubrik (Guld/Accent)',
-            type: 'string',
+            type: 'localeString',
             description: 'Den färgade texten på rad 2. T.ex: "till nästa nivå"',
         },
         {
             name: 'heroSubtitle',
             title: 'Hero Underrubrik',
-            type: 'text',
-            rows: 3,
+            type: 'localeText',
             description: 'Texten under rubriken.',
         },
         // --- LOGO ---
@@ -93,7 +92,7 @@ export default {
         {
             name: 'bannerText',
             title: 'Banner Text',
-            type: 'string',
+            type: 'localeString',
             description: 'Texten som ska stå i bannern.',
             hidden: ({ document }: any) => !document?.bannerActive, // Dölj fältet om bannern är avstängd (Smart UX!)
         },
