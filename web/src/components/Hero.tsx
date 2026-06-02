@@ -93,11 +93,11 @@ const Hero = () => {
                             initial={{ opacity: 0, y: 12 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, ease: 'easeOut' }}
-                            className="mb-6 flex items-center justify-center gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-gold-light md:text-xs"
+                            className="mb-4 flex items-center justify-center gap-2 text-[0.55rem] font-semibold uppercase tracking-[0.18em] text-gold-light sm:mb-6 sm:gap-3 sm:text-xs sm:tracking-[0.3em]"
                         >
-                            <span className="h-px w-8 bg-tennis-gold/60" />
+                            <span className="h-px w-5 bg-tennis-gold/60 sm:w-8" />
                             Stockholm South Tennis Academy
-                            <span className="h-px w-8 bg-tennis-gold/60" />
+                            <span className="h-px w-5 bg-tennis-gold/60 sm:w-8" />
                         </motion.div>
 
                         {/* Headline with line-clip reveal */}
@@ -105,7 +105,7 @@ const Hero = () => {
                             variants={lineParent}
                             initial="hidden"
                             animate="show"
-                            className="font-display text-[3.25rem] uppercase leading-[1.0] tracking-tight text-white drop-shadow-[0_4px_30px_rgba(5,11,24,0.6)] sm:text-7xl md:text-8xl lg:text-[7.5rem]"
+                            className="font-display text-[2.5rem] uppercase leading-[1.02] tracking-tight text-white drop-shadow-[0_4px_30px_rgba(5,11,24,0.6)] min-[400px]:text-[2.85rem] sm:text-7xl md:text-8xl lg:text-[7.5rem]"
                         >
                             {/* No overflow clipping → Swedish diacritics (Ä Å Ö) always render in full */}
                             <motion.span variants={lineChild} className="block">
@@ -123,7 +123,7 @@ const Hero = () => {
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.65, ease: 'easeOut' }}
-                            className="mx-auto mt-7 max-w-2xl text-balance text-base leading-relaxed text-gray-300 md:text-lg"
+                            className="mx-auto mt-5 max-w-2xl text-balance text-sm leading-relaxed text-gray-300 sm:mt-7 sm:text-base md:text-lg"
                         >
                             {subtitle}
                         </motion.p>
@@ -133,11 +133,11 @@ const Hero = () => {
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.8, ease: 'easeOut' }}
-                            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+                            className="mt-8 flex w-full flex-col items-stretch justify-center gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
                         >
                             <Link
                                 to="/lager"
-                                className="group relative inline-flex items-center gap-2 overflow-hidden bg-tennis-gold px-8 py-4 text-sm font-bold uppercase tracking-widest text-tennis-navy shadow-gold transition-transform duration-300 hover:-translate-y-0.5"
+                                className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden bg-tennis-gold px-6 py-3.5 text-sm font-bold uppercase tracking-widest text-tennis-navy shadow-gold transition-transform duration-300 hover:-translate-y-0.5 sm:w-auto sm:px-8 sm:py-4"
                             >
                                 {/* sheen sweep */}
                                 <span className="absolute inset-0 -translate-x-full bg-gold-sheen transition-transform duration-700 ease-out group-hover:translate-x-full" />
@@ -147,7 +147,7 @@ const Hero = () => {
 
                             <a
                                 href="#program"
-                                className="group inline-flex items-center gap-2 border border-white/40 bg-white/5 px-8 py-4 text-sm font-bold uppercase tracking-widest text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-tennis-navy"
+                                className="group inline-flex w-full items-center justify-center gap-2 border border-white/40 bg-white/5 px-6 py-3.5 text-sm font-bold uppercase tracking-widest text-white backdrop-blur-sm transition-all duration-300 hover:border-white hover:bg-white hover:text-tennis-navy sm:w-auto sm:px-8 sm:py-4"
                             >
                                 {t('hero.cta_programs')}
                                 <ArrowRight size={16} className="opacity-60 transition-transform duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
@@ -162,7 +162,7 @@ const Hero = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 1.2 }}
-                    className="mb-8 flex flex-col items-center gap-2 text-white/60 transition-colors hover:text-tennis-gold"
+                    className="mb-6 flex flex-col items-center gap-1.5 text-white/60 transition-colors hover:text-tennis-gold sm:mb-8 sm:gap-2"
                     aria-label={t('hero.scroll')}
                 >
                     <span className="text-[0.6rem] font-semibold uppercase tracking-[0.3em]">{t('hero.scroll')}</span>
