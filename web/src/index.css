@@ -81,6 +81,18 @@
   }
 }
 
+/* --- Gallery marquee (continuous, seamless) --- */
+@keyframes gallery-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee { animation: gallery-marquee 42s linear infinite; }
+.animate-marquee-rev { animation: gallery-marquee 42s linear infinite reverse; }
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
