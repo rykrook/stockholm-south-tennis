@@ -111,7 +111,9 @@ const Hero = () => {
                             <motion.span variants={lineChild} className="block">
                                 {title}
                             </motion.span>
-                            <motion.span variants={lineChild} className="block text-gold-gradient">
+                            {/* Solid gold (not a background-clip gradient) so Ä/Å marks never get sliced, incl. Safari */}
+                            {/* mt gives row 2's Ä/Å ring clearance from row 1 (scales with font size) */}
+                            <motion.span variants={lineChild} className="mt-[0.28em] block text-tennis-gold">
                                 {titleAccent}
                             </motion.span>
                         </motion.h1>

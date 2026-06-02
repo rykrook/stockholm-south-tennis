@@ -78,9 +78,9 @@ const CoachSection = () => {
               </h2>
 
               {localize(activeCoach.philosophy) && (
-                <div className="relative mb-8 pl-7">
-                  <Quote className="absolute -left-1 -top-2 text-tennis-gold/40" size={36} strokeWidth={1.5} />
-                  <p className="border-l-2 border-tennis-gold pl-6 text-xl font-light italic text-gray-200">
+                <div className="mb-8">
+                  <Quote className="mb-3 text-tennis-gold" size={28} fill="currentColor" strokeWidth={0} />
+                  <p className="text-2xl font-light italic leading-snug text-gray-100">
                     {localize(activeCoach.philosophy)}
                   </p>
                 </div>

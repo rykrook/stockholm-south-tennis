@@ -59,7 +59,7 @@ const BookingSection = () => {
                                 {t('booking.eyebrow')}
                             </p>
                             <h2 className="font-display text-4xl uppercase tracking-tight text-tennis-navy md:text-5xl">
-                                {t('booking.title_1')} <span className="text-gold-gradient">{t('booking.title_2')}</span>
+                                {t('booking.title_1')} <span className="text-tennis-gold">{t('booking.title_2')}</span>
                             </h2>
                             <p className="mt-4 text-gray-600">{t('booking.subtitle')}</p>
                         </div>
